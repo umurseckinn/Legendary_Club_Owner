@@ -282,8 +282,17 @@
 
       .steps { display: grid; gap: 18px; }
       .step-card { display: grid; gap: 22px; padding: 22px; }
-      .step-text { position: relative; padding-left: 86px; min-height: 120px; }
-      .step-no { position: absolute; left: 0; top: -8px; font-size: clamp(4.4rem, 14vw, 7rem); color: rgba(240,244,248,0.14); }
+      .step-text { position: relative; padding-left: clamp(112px, 14vw, 148px); min-height: 120px; }
+      .step-no {
+        position: absolute;
+        left: 0;
+        top: -8px;
+        width: clamp(96px, 12vw, 132px);
+        font-size: clamp(4.4rem, 14vw, 7rem);
+        line-height: 0.82;
+        text-align: left;
+        color: rgba(240,244,248,0.14);
+      }
       .step-text h3 { padding-top: 28px; margin-bottom: 10px; font-size: clamp(2rem, 4vw, 2.9rem); }
       .step-preview { display: flex; justify-content: center; }
       .mini-module { padding: 18px 16px 88px; height: 100%; }
@@ -493,7 +502,7 @@
           <div class="steps">
             <article class="step-card reveal">
               <div class="step-text">
-                <div class="step-no">01</div>
+                <div class="step-no">1</div>
                 <h3>BUILD YOUR CLUB</h3>
                 <p>Design your stadium, grow your infrastructure, attract sponsorships and build a scouting network from the ground up.</p>
               </div>
@@ -518,7 +527,7 @@
 
             <article class="step-card reveal" style="transition-delay:.1s;">
               <div class="step-text">
-                <div class="step-no">02</div>
+                <div class="step-no">2</div>
                 <h3>SCOUT &amp; ASSEMBLE</h3>
                 <p>Collect player cards, evaluate real stats, and put together the squad that fits YOUR tactical vision.</p>
               </div>
@@ -543,7 +552,7 @@
 
             <article class="step-card reveal" style="transition-delay:.2s;">
               <div class="step-text">
-                <div class="step-no">03</div>
+                <div class="step-no">3</div>
                 <h3>COMPETE &amp; WIN</h3>
                 <p>Enter weekly leagues against real managers and manage from anywhere. Results are decided by your tactics — not your wallet.</p>
               </div>
