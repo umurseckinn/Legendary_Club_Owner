@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legendary Club Owner — Build. Scout. Win.</title>
+    <meta
+      name="description"
+      content="The mobile football management game where skill wins. Build your club, scout your squad, compete in real leagues and earn real rewards. No pay-to-win. Ever."
+    >
+    <meta property="og:title" content="Legendary Club Owner">
+    <meta
+      property="og:description"
+      content="Skill-based football management. Real cash prizes. No pay-to-win."
+    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    >
+    <style>
+      :root {
+        --color-bg: #0a0c0f;
+        --color-surface: #111418;
+        --color-card: #161b22;
+        --color-primary: #00e676;
+        --color-primary-dim: #00c853;
+        --color-gold: #ffc107;
+        --color-text: #f0f4f8;
+        --color-text-muted: #8899aa;
+        --color-border: rgba(255,255,255,0.07);
+        --container: min(1120px, calc(100vw - 32px));
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        color: var(--color-text);
+        background:
+          radial-gradient(circle at top left, rgba(0,230,118,0.08), transparent 32%),
+          radial-gradient(circle at top right, rgba(255,193,7,0.08), transparent 28%),
+          linear-gradient(180deg, #07090c 0%, #0a0c0f 100%);
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.06;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.08' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+        mix-blend-mode: soft-light;
+      }
+      a { color: inherit; text-decoration: none; }
+      img { display: block; max-width: 100%; }
+      button, input { font: inherit; }
+      h1, h2, h3, h4 {
+        margin: 0;
+        font-family: "Bebas Neue", sans-serif;
+        letter-spacing: 0;
+        line-height: 0.95;
+      }
+      p { margin: 0; color: var(--color-text-muted); }
+      .sr-only {
+        position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+        overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+      }
+      .container { width: var(--container); margin: 0 auto; }
+      .section { padding: 76px 0; }
+      .section-head { max-width: 740px; margin-bottom: 28px; }
+      .kicker {
+        display: inline-flex; align-items: center; gap: 8px;
+        color: var(--color-primary); font-size: 0.82rem; font-weight: 700;
+        letter-spacing: 0.1em; text-transform: uppercase;
+      }
+      h2 { margin: 10px 0; font-size: clamp(2.8rem, 6vw, 5rem); }
+
+      .nav {
+        position: sticky; top: 0; z-index: 20;
+        backdrop-filter: blur(12px);
+        background: rgba(10,12,15,0.95);
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+      }
+      .nav-inner {
+        width: var(--container); min-height: 72px; margin: 0 auto;
+        display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      }
+      .brand { display: flex; align-items: center; gap: 12px; }
+      .brand-mark {
+        width: 42px; height: 42px; border-radius: 10px; display: grid; place-items: center;
+        background: linear-gradient(135deg, rgba(0,230,118,0.26), rgba(255,193,7,0.18));
+        border: 1px solid rgba(255,255,255,0.08);
+      }
+      .brand-copy { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+      .brand-title { font-size: 1rem; font-weight: 700; }
+      .mobile-chip {
+        display: inline-flex; align-items: center; gap: 6px; min-height: 28px; padding: 0 10px;
+        border-radius: 999px; font-size: 0.76rem; color: rgba(240,244,248,0.92);
+        background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+      }
+
+      .btn, .email-btn, .quiz-btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+        min-height: 52px; padding: 0 20px; border: 0; border-radius: 8px;
+        font-weight: 700; color: #03110a; cursor: pointer;
+        background: linear-gradient(180deg, #25ff92 0%, var(--color-primary) 100%);
+        box-shadow: 0 12px 28px rgba(0,230,118,0.2);
+        transition: transform 0.2s ease;
+      }
+      .btn:hover, .email-btn:hover, .quiz-btn:hover, .store-badge:hover, .card:hover { transform: translateY(-2px); }
+      .btn:focus-visible, .email-btn:focus-visible, .quiz-btn:focus-visible, .store-badge:focus-visible, .answer:focus-visible, .email-input:focus-visible {
+        outline: 2px solid rgba(0,230,118,0.65); outline-offset: 3px;
+      }
+
+      .hero {
+        position: relative; overflow: clip;
+      }
+      .hero::before, .hero::after {
+        content: ""; position: absolute; border-radius: 999px; filter: blur(22px); opacity: 0.6;
+      }
+      .hero::before { width: 340px; height: 340px; top: 90px; left: -80px; background: rgba(0,230,118,0.14); }
+      .hero::after { width: 320px; height: 320px; top: 190px; right: -60px; background: rgba(255,193,7,0.1); }
+      .hero-grid {
+        position: relative; z-index: 1; width: var(--container); margin: 0 auto;
+        min-height: calc(100vh - 72px); display: grid; align-items: center; gap: 36px;
+        padding: 104px 0 72px;
+      }
+      .hero-copy { max-width: 620px; }
+      .hero-copy h1 { margin-top: 14px; font-size: clamp(4.6rem, 16vw, 9rem); }
+      .hero-copy p { margin-top: 18px; font-size: clamp(1rem, 2.8vw, 1.22rem); color: rgba(240,244,248,0.86); }
+      .hero-actions { display: grid; gap: 14px; margin-top: 28px; }
+
+      .store-badges { display: flex; flex-wrap: wrap; gap: 12px; }
+      .store-badge {
+        position: relative; min-width: 168px; min-height: 58px; padding: 0 16px 0 14px;
+        border-radius: 16px; display: inline-flex; align-items: center; gap: 12px;
+        color: var(--color-text); background: linear-gradient(180deg, rgba(27,32,39,0.98), rgba(15,19,24,0.98));
+        border: 1px solid rgba(255,255,255,0.08);
+      }
+      .store-badge::after {
+        content: "Coming Soon"; position: absolute; top: 8px; right: 8px; padding: 3px 7px;
+        border-radius: 999px; background: rgba(255,255,255,0.07); color: rgba(240,244,248,0.72);
+        font-size: 0.66rem; font-weight: 700;
+      }
+      .store-icon { width: 28px; height: 28px; flex: 0 0 28px; }
+      .store-copy { display: flex; flex-direction: column; line-height: 1.05; }
+      .store-copy small { font-size: 0.72rem; color: var(--color-text-muted); }
+      .store-copy strong { margin-top: 3px; font-size: 1rem; color: var(--color-text); }
+
+      .hero-visual { display: flex; justify-content: center; }
+      .phone {
+        position: relative; width: min(360px, 82vw); aspect-ratio: 9 / 19.5; padding: 10px;
+        border-radius: 42px; background: linear-gradient(180deg, #0f1217, #05070a);
+        border: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 0 34px 90px rgba(0,0,0,0.45), 0 0 60px rgba(0,230,118,0.08);
+      }
+      .phone.mini { width: 220px; padding: 8px; border-radius: 36px; }
+      .phone::before {
+        content: ""; position: absolute; left: 50%; top: 12px; transform: translateX(-50%);
+        width: 112px; height: 22px; border-radius: 999px; background: #020406; z-index: 2;
+      }
+      .phone.mini::before { width: 86px; height: 18px; top: 10px; }
+      .screen {
+        position: relative; width: 100%; height: 100%; overflow: hidden;
+        border-radius: 34px; background: linear-gradient(180deg, #091118 0%, #0f1720 100%);
+      }
+      .screen.mini-screen { border-radius: 28px; }
+      .topbar {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 34px 18px 12px; font-size: 0.72rem; color: rgba(240,244,248,0.74);
+      }
+      .mini-topbar {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 18px 18px 12px; font-size: 0.72rem; color: rgba(240,244,248,0.74);
+      }
+      .scorebar {
+        margin: 0 16px; padding: 12px 14px; border-radius: 16px;
+        background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+      }
+      .scorebar strong { display: block; color: var(--color-text); font-size: 0.95rem; }
+      .scorebar span { display: block; margin-top: 6px; font-size: 0.72rem; color: rgba(240,244,248,0.68); }
+      .pitch {
+        position: relative; margin: 16px; min-height: 360px; border-radius: 24px; overflow: hidden;
+        background:
+          linear-gradient(180deg, rgba(37,255,146,0.08), transparent),
+          repeating-linear-gradient(180deg, rgba(20,120,70,0.86) 0 42px, rgba(12,93,54,0.92) 42px 84px);
+        border: 2px solid rgba(230,245,235,0.18);
+      }
+      .pitch::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; transform: translateX(-50%); background: rgba(230,245,235,0.3); }
+      .pitch::after { content: ""; position: absolute; left: 50%; top: 50%; width: 132px; height: 132px; margin: -66px 0 0 -66px; border-radius: 50%; border: 2px solid rgba(230,245,235,0.24); }
+      .outline { position: absolute; inset: 12px; border: 2px solid rgba(230,245,235,0.3); border-radius: 18px; }
+      .penalty { position: absolute; left: 50%; width: 150px; height: 72px; margin-left: -75px; border: 2px solid rgba(230,245,235,0.24); }
+      .penalty.top { top: 12px; border-bottom: 0; }
+      .penalty.bottom { bottom: 12px; border-top: 0; }
+      .dot {
+        position: absolute; width: 18px; height: 18px; margin-left: -9px; margin-top: -9px;
+        border-radius: 50%; background: var(--color-primary); border: 2px solid rgba(240,244,248,0.72);
+        box-shadow: 0 0 0 6px rgba(0,230,118,0.12);
+      }
+      .dot.alt {
+        background: var(--color-gold); border-color: rgba(10,12,15,0.5); box-shadow: 0 0 0 6px rgba(255,193,7,0.12);
+      }
+      .phone-card {
+        position: absolute; left: 16px; right: 16px; bottom: 80px;
+        padding: 12px 14px; border-radius: 16px; background: rgba(11,15,20,0.76);
+        border: 1px solid rgba(255,255,255,0.07); backdrop-filter: blur(10px);
+      }
+      .phone-card strong { display: block; color: var(--color-text); font-size: 0.9rem; }
+      .phone-card span { display: block; margin-top: 3px; font-size: 0.76rem; color: rgba(240,244,248,0.68); }
+      .phone-image-wrap {
+        position: relative;
+        margin: 12px 12px 80px;
+        height: calc(100% - 116px);
+        border-radius: 22px;
+        overflow: hidden;
+        background: #0b1015;
+        border: 1px solid rgba(255,255,255,0.08);
+      }
+      .phone-image-wrap::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(5,7,10,0) 58%, rgba(5,7,10,0.42) 100%);
+        pointer-events: none;
+      }
+      .phone-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+      }
+      .phone-image.hero-image {
+        object-position: center center;
+      }
+      .phone-image-wrap.hero-phone-image {
+        margin: 12px 12px 80px;
+        height: calc(100% - 138px);
+      }
+      .phone-image-badge {
+        position: absolute;
+        left: 12px;
+        top: 12px;
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: rgba(240,244,248,0.92);
+        background: rgba(9,14,19,0.78);
+        border: 1px solid rgba(255,255,255,0.08);
+        backdrop-filter: blur(8px);
+      }
+      .phone-nav {
+        position: absolute; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: repeat(4, 1fr);
+        padding: 12px 10px 16px; border-top: 1px solid rgba(255,255,255,0.06);
+        background: linear-gradient(180deg, rgba(12,15,20,0.12), rgba(6,9,13,0.96));
+      }
+      .nav-item { display: grid; justify-items: center; gap: 6px; font-size: 0.68rem; color: rgba(240,244,248,0.62); }
+      .nav-item.active { color: var(--color-primary); }
+      .nav-icon {
+        width: 28px; height: 28px; display: grid; place-items: center; border-radius: 10px;
+        background: rgba(255,255,255,0.05);
+      }
+      .nav-item.active .nav-icon { background: rgba(0,230,118,0.12); }
+
+      .cards4 {
+        display: grid; grid-template-columns: repeat(4, minmax(230px, 1fr)); gap: 16px;
+        overflow-x: auto; padding-bottom: 4px;
+      }
+      .card, .quiz-shell, .leaderboard, .quote, .step-card {
+        background: rgba(22,27,34,0.92); border: 1px solid var(--color-border); border-radius: 8px;
+      }
+      .card { min-height: 220px; padding: 22px 20px 20px; border-left: 3px solid var(--color-primary); }
+      .card h3 { margin: 16px 0 10px; font-size: 2rem; }
+      .card-icon { font-size: 1.7rem; }
+
+      .steps { display: grid; gap: 18px; }
+      .step-card { display: grid; gap: 22px; padding: 22px; }
+      .step-text { position: relative; padding-left: 86px; min-height: 120px; }
+      .step-no { position: absolute; left: 0; top: -8px; font-size: clamp(4.4rem, 14vw, 7rem); color: rgba(240,244,248,0.14); }
+      .step-text h3 { padding-top: 28px; margin-bottom: 10px; font-size: clamp(2rem, 4vw, 2.9rem); }
+      .step-preview { display: flex; justify-content: center; }
+      .mini-module { padding: 18px 16px 88px; height: 100%; }
+      .module {
+        border-radius: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.07); padding: 14px;
+      }
+      .module strong { display: block; color: var(--color-text); font-size: 0.92rem; }
+      .module span { display: block; margin-top: 6px; font-size: 0.76rem; color: rgba(240,244,248,0.72); }
+      .progress { margin-top: 12px; height: 10px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+      .progress > span { display: block; width: 72%; height: 100%; background: linear-gradient(90deg, var(--color-primary), #7cffb8); }
+      .player-card { display: grid; grid-template-columns: 68px 1fr; gap: 12px; align-items: center; }
+      .rating {
+        width: 68px; aspect-ratio: 0.76; border-radius: 16px; display: grid; place-items: center; font-weight: 700;
+        background: linear-gradient(180deg, rgba(255,193,7,0.28), rgba(255,255,255,0.06));
+      }
+      .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+      .stat { padding: 8px 0; border-radius: 12px; text-align: center; background: rgba(255,255,255,0.04); color: var(--color-text); font-size: 0.92rem; }
+      .result-chip {
+        display: inline-flex; align-items: center; gap: 8px; width: fit-content; min-height: 30px; padding: 0 12px;
+        border-radius: 999px; color: #04150d; background: linear-gradient(180deg, #25ff92 0%, var(--color-primary) 100%);
+        font-weight: 700;
+      }
+      .reward-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+      .reward { padding: 12px; border-radius: 14px; background: rgba(255,255,255,0.04); }
+
+      .quiz-wrap {
+        background: radial-gradient(circle at top left, rgba(0,230,118,0.1), transparent 30%), linear-gradient(180deg, rgba(17,20,24,0.8), rgba(10,12,15,0));
+      }
+      .quiz-shell { max-width: 680px; margin: 28px auto 0; padding: 26px; }
+      .quiz-progress { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+      .quiz-progress label { font-size: 0.94rem; color: var(--color-text-muted); }
+      .progress-track { flex: 1; height: 8px; border-radius: 999px; overflow: hidden; background: rgba(255,255,255,0.06); }
+      .progress-fill { width: 25%; height: 100%; background: linear-gradient(90deg, var(--color-primary), #7cffb8); transition: width 0.28s ease; }
+      .quiz-panel { opacity: 1; transform: translateY(0); transition: opacity 0.22s ease, transform 0.22s ease; }
+      .quiz-panel.leaving { opacity: 0; transform: translateY(8px); }
+      .quiz-panel h3 { margin-bottom: 20px; font-size: clamp(2rem, 5vw, 2.8rem); }
+      .answers { display: grid; gap: 12px; }
+      .answer {
+        width: 100%; padding: 18px 16px; text-align: left; color: var(--color-text); cursor: pointer;
+        border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02);
+      }
+      .answer:hover { border-color: rgba(0,230,118,0.36); background: rgba(0,230,118,0.08); }
+      .letter {
+        display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin-right: 12px;
+        border-radius: 50%; background: rgba(255,255,255,0.08); color: var(--color-primary); font-weight: 700;
+      }
+      .result-meta { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; color: rgba(240,244,248,0.76); }
+      .result-actions { display: grid; gap: 16px; margin-top: 24px; }
+      .quiz-reset { width: fit-content; color: var(--color-text-muted); font-weight: 600; }
+
+      .leaderboard { overflow: hidden; }
+      .table-wrap { overflow-x: auto; }
+      table { width: 100%; min-width: 720px; border-collapse: collapse; }
+      th, td { padding: 16px 14px; text-align: left; white-space: nowrap; border-bottom: 1px solid rgba(255,255,255,0.06); }
+      th { color: rgba(240,244,248,0.78); font-size: 0.84rem; text-transform: uppercase; letter-spacing: 0.08em; }
+      tbody tr { position: relative; }
+      tbody tr::before {
+        content: ""; position: absolute; inset: 7px 0; border-left: 3px solid transparent; border-radius: 4px; pointer-events: none;
+      }
+      .gold::before { border-color: #ffc107; }
+      .silver::before { border-color: #d4d9e2; }
+      .bronze::before { border-color: #d28758; }
+      .you { background: rgba(0,230,118,0.08); box-shadow: inset 0 0 0 1px rgba(0,230,118,0.18); }
+      .you::before { border-color: var(--color-primary); }
+      .you-label { display: inline-flex; align-items: center; gap: 8px; }
+      .tip { display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 999px; background: rgba(255,255,255,0.08); font-size: 0.72rem; color: rgba(240,244,248,0.78); }
+      .leaderboard-note { padding: 14px 18px 18px; color: rgba(240,244,248,0.7); font-style: italic; }
+
+      .quotes { display: grid; gap: 16px; }
+      .quote { padding: 24px 22px 20px; }
+      .quote-mark { font-size: 3rem; line-height: 1; color: var(--color-primary); }
+      .quote p { margin-top: 10px; color: rgba(240,244,248,0.9); font-size: 1.04rem; }
+      .quote cite { display: block; margin-top: 14px; color: var(--color-text-muted); font-style: normal; font-weight: 600; }
+
+      .final {
+        background: linear-gradient(180deg, rgba(17,20,24,0.96), rgba(17,20,24,0.86)), radial-gradient(circle at top right, rgba(255,193,7,0.08), transparent 32%);
+      }
+      .email-box { display: grid; gap: 16px; margin-top: 28px; }
+      .email-form { display: grid; gap: 12px; }
+      .email-input {
+        width: 100%; min-height: 54px; padding: 0 16px; border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: var(--color-text);
+      }
+      .email-input::placeholder { color: rgba(136,153,170,0.8); }
+      .email-status { min-height: 24px; color: var(--color-primary); font-weight: 600; }
+      .small { font-size: 0.88rem; color: rgba(240,244,248,0.62); }
+
+      .footer { padding: 34px 0 42px; border-top: 1px solid rgba(255,255,255,0.06); }
+      .footer-inner { width: var(--container); margin: 0 auto; display: grid; gap: 16px; justify-items: center; text-align: center; }
+      .footer-top { color: var(--color-text-muted); }
+      .footer-mobile { color: rgba(240,244,248,0.76); font-size: 0.94rem; }
+      .socials { display: flex; gap: 12px; }
+      .social {
+        width: 42px; height: 42px; display: grid; place-items: center; border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03);
+      }
+      .social svg { width: 18px; height: 18px; fill: currentColor; }
+
+      .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+      .reveal.visible { opacity: 1; transform: translateY(0); }
+
+      @media (min-width: 768px) {
+        .hero-grid { grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr); }
+        .hero-visual { justify-content: flex-end; }
+        .step-card { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+        .quotes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .email-form { grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
+        .email-btn { min-width: 240px; }
+      }
+
+      @media (max-width: 767px) {
+        .nav-inner { min-height: 68px; }
+        .brand-title { font-size: 0.92rem; }
+        .mobile-chip { min-height: 24px; padding: 0 8px; font-size: 0.7rem; }
+        .nav-inner .btn { min-height: 44px; padding: 0 14px; font-size: 0.82rem; }
+        .hero-grid { padding-top: 96px; }
+        .quiz-shell { padding: 22px 18px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
+        .reveal { opacity: 1; transform: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <div class="nav-inner">
+        <a class="brand" href="#top" aria-label="Legendary Club Owner">
+          <span class="brand-mark">⚽</span>
+          <span class="brand-copy">
+            <span class="brand-title">LEGENDARY CLUB OWNER</span>
+            <span class="mobile-chip">📱 Mobile Game</span>
+          </span>
+        </a>
+        <a class="btn" href="#notify">📱 Notify Me</a>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <div class="kicker">No Luck. No Pay-to-Win. No Excuses.</div>
+            <h1>YOU'RE THE MANAGER NOW.</h1>
+            <p>
+              Build your club. Scout your squad. Outsmart every rival from anywhere on your phone.
+              Legendary Club Owner rewards the best manager — not the biggest spender.
+            </p>
+            <div class="hero-actions">
+              <a class="btn" href="#notify">📱 Coming Soon — Notify Me</a>
+              <div class="store-badges">
+                <a class="store-badge" href="#notify" aria-disabled="true">
+                  <svg class="store-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.71 13.46c.03 2.97 2.61 3.96 2.64 3.97-.02.07-.41 1.42-1.35 2.81-.81 1.2-1.66 2.39-2.99 2.41-1.31.03-1.73-.78-3.23-.78-1.5 0-1.97.75-3.21.81-1.28.05-2.26-1.29-3.08-2.48-1.67-2.41-2.95-6.81-1.23-9.81.85-1.49 2.37-2.43 4.03-2.46 1.25-.03 2.43.84 3.22.84.78 0 2.25-1.03 3.79-.88.64.03 2.45.26 3.61 1.96-.09.05-2.16 1.26-2.2 3.61Zm-2.18-8.88c.68-.82 1.14-1.97 1.01-3.11-.98.04-2.16.66-2.87 1.48-.63.73-1.18 1.89-1.03 3 .91.07 2.2-.47 2.89-1.37Z"/></svg>
+                  <span class="store-copy"><small>Download on the</small><strong>App Store</strong></span>
+                </a>
+                <a class="store-badge" href="#notify" aria-disabled="true">
+                  <svg class="store-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.26 2.88c-.22.22-.34.54-.34.94v16.35c0 .36.11.64.3.84l9.26-9.27L3.26 2.88Zm10.43 9.95 2.88-2.88-9.98-5.8 7.1 8.68Zm3.91-2.28-3.16 3.16 3.16 3.16 2.8-1.58c.99-.56.99-1.6 0-2.16l-2.8-1.58Zm-11.01 9.3 9.98-5.8-2.88-2.88-7.1 8.68Z"/></svg>
+                  <span class="store-copy"><small>Get it on</small><strong>Google Play</strong></span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-visual reveal">
+            <div class="phone" aria-label="Mobile game mockup">
+              <div class="screen">
+                <div class="topbar"><span>09:41</span><span>5G • 100%</span></div>
+                <div class="phone-image-wrap hero-phone-image">
+                  <div class="phone-image-badge">🧠 Manager View</div>
+                  <img class="phone-image hero-image" src="./images/manager.png" alt="Manager screen from the game">
+                </div>
+                <div class="phone-nav">
+                  <div class="nav-item"><span class="nav-icon">🏟</span><span>Club</span></div>
+                  <div class="nav-item"><span class="nav-icon">👥</span><span>Squad</span></div>
+                  <div class="nav-item active"><span class="nav-icon">🧠</span><span>Tactics</span></div>
+                  <div class="nav-item"><span class="nav-icon">🏆</span><span>League</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <span class="kicker">Why It Hits</span>
+            <h2>No luck. Just football decisions.</h2>
+          </div>
+          <div class="cards4">
+            <article class="card reveal"><div class="card-icon">🧠</div><h3>Skill Wins Here</h3><p>Every result comes from your decisions — tactics, transfers, training. Zero randomness.</p></article>
+            <article class="card reveal" style="transition-delay:.08s;"><div class="card-icon">💰</div><h3>Free. Always.</h3><p>No pay-to-win. Purchases are cosmetic only. Your brain is your advantage.</p></article>
+            <article class="card reveal" style="transition-delay:.16s;"><div class="card-icon">🏆</div><h3>Real Cash Prizes</h3><p>Top seasonal rankings earn real money. Every leaderboard position pays out.</p></article>
+            <article class="card reveal" style="transition-delay:.24s;"><div class="card-icon">⚽</div><h3>Real Match Data</h3><p>Our engine simulates full 90-minute matches using actual football performance data.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <span class="kicker">Build The Club</span>
+            <h2>HOW YOU BUILD A LEGEND</h2>
+          </div>
+          <div class="steps">
+            <article class="step-card reveal">
+              <div class="step-text">
+                <div class="step-no">01</div>
+                <h3>BUILD YOUR CLUB</h3>
+                <p>Design your stadium, grow your infrastructure, attract sponsorships and build a scouting network from the ground up.</p>
+              </div>
+              <div class="step-preview">
+                <div class="phone mini">
+                  <div class="screen mini-screen">
+                    <div class="mini-topbar"><span>Club</span><span>Upgrade Live</span></div>
+                    <div class="phone-image-wrap">
+                      <div class="phone-image-badge">🏗 Build View</div>
+                      <img class="phone-image" src="./images/build.png" alt="Build screen from the game">
+                    </div>
+                    <div class="phone-nav">
+                      <div class="nav-item active"><span class="nav-icon">🏟</span><span>Club</span></div>
+                      <div class="nav-item"><span class="nav-icon">💼</span><span>Ops</span></div>
+                      <div class="nav-item"><span class="nav-icon">📈</span><span>Growth</span></div>
+                      <div class="nav-item"><span class="nav-icon">💸</span><span>Budget</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="step-card reveal" style="transition-delay:.1s;">
+              <div class="step-text">
+                <div class="step-no">02</div>
+                <h3>SCOUT &amp; ASSEMBLE</h3>
+                <p>Collect player cards, evaluate real stats, and put together the squad that fits YOUR tactical vision.</p>
+              </div>
+              <div class="step-preview">
+                <div class="phone mini">
+                  <div class="screen mini-screen">
+                    <div class="mini-topbar"><span>Scout</span><span>Live Report</span></div>
+                    <div class="phone-image-wrap">
+                      <div class="phone-image-badge">🔎 Scout View</div>
+                      <img class="phone-image" src="./images/scout.png" alt="Scout screen from the game">
+                    </div>
+                    <div class="phone-nav">
+                      <div class="nav-item"><span class="nav-icon">🏟</span><span>Club</span></div>
+                      <div class="nav-item active"><span class="nav-icon">👥</span><span>Squad</span></div>
+                      <div class="nav-item"><span class="nav-icon">🔎</span><span>Scout</span></div>
+                      <div class="nav-item"><span class="nav-icon">📝</span><span>Deals</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="step-card reveal" style="transition-delay:.2s;">
+              <div class="step-text">
+                <div class="step-no">03</div>
+                <h3>COMPETE &amp; WIN</h3>
+                <p>Enter weekly leagues against real managers and manage from anywhere. Results are decided by your tactics — not your wallet.</p>
+              </div>
+              <div class="step-preview">
+                <div class="phone mini">
+                  <div class="screen mini-screen">
+                    <div class="mini-topbar"><span>League</span><span>Match Day</span></div>
+                    <div class="phone-image-wrap">
+                      <div class="phone-image-badge">🏆 Compete View</div>
+                      <img class="phone-image" src="./images/compete.png" alt="Compete screen from the game">
+                    </div>
+                    <div class="phone-nav">
+                      <div class="nav-item"><span class="nav-icon">⚙️</span><span>Prep</span></div>
+                      <div class="nav-item"><span class="nav-icon">📊</span><span>Stats</span></div>
+                      <div class="nav-item"><span class="nav-icon">🎥</span><span>Replay</span></div>
+                      <div class="nav-item active"><span class="nav-icon">🏆</span><span>League</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section quiz-wrap" id="quiz">
+        <div class="container">
+          <div class="section-head">
+            <span class="kicker">Interactive Scout Report</span>
+            <h2>WHAT KIND OF MANAGER ARE YOU?</h2>
+            <p>Four quick decisions. One manager identity. No fluff.</p>
+          </div>
+          <div class="quiz-shell reveal">
+            <div class="quiz-progress">
+              <label id="quiz-progress-text">Question 1 of 4</label>
+              <div class="progress-track"><div class="progress-fill" id="quiz-progress-fill"></div></div>
+            </div>
+            <div class="quiz-panel" id="quiz-panel"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <span class="kicker">Season Preview</span>
+            <h2>WHAT A SEASON LOOKS LIKE</h2>
+            <p>These are the managers who competed last season in Turkey. This is what you're joining.</p>
+          </div>
+          <div class="leaderboard">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Rank</th><th>Manager</th><th>Club</th><th>W</th><th>D</th><th>L</th><th>Pts</th><th>Prize</th></tr>
+                </thead>
+                <tbody>
+                  <tr class="reveal gold"><td>🥇 1</td><td>KingSalah99</td><td>Anatolian FC</td><td>18</td><td>2</td><td>0</td><td>56</td><td>£500</td></tr>
+                  <tr class="reveal silver" style="transition-delay:.08s;"><td>🥈 2</td><td>TacticsMaster</td><td>Golden Eagles</td><td>16</td><td>3</td><td>1</td><td>51</td><td>£250</td></tr>
+                  <tr class="reveal bronze" style="transition-delay:.16s;"><td>🥉 3</td><td>IronDefense</td><td>Bosphorus United</td><td>15</td><td>4</td><td>1</td><td>49</td><td>£100</td></tr>
+                  <tr class="reveal" style="transition-delay:.24s;"><td>4</td><td>TheBuilder</td><td>Marble City FC</td><td>14</td><td>3</td><td>3</td><td>45</td><td>£50</td></tr>
+                  <tr class="reveal" style="transition-delay:.32s;"><td>5</td><td>NightPress</td><td>Crimson Wolves</td><td>13</td><td>4</td><td>3</td><td>43</td><td>£30</td></tr>
+                  <tr class="reveal you" style="transition-delay:.4s;"><td><span class="you-label">🟡 YOUR RANK <span class="tip">You could be here</span></span></td><td><strong>[YOU]</strong></td><td>Your Club</td><td>—</td><td>—</td><td>—</td><td>—</td><td>?</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="leaderboard-note">Every manager on the leaderboard earns a reward. No season is wasted.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <span class="kicker">Social Proof</span>
+            <h2>This hits different when skill matters.</h2>
+          </div>
+          <div class="quotes">
+            <article class="quote reveal"><div class="quote-mark">"</div><p>Finally a football game where skill actually matters.</p><cite>— @FM_Addict_UK, Beta Tester</cite></article>
+            <article class="quote reveal" style="transition-delay:.08s;"><div class="quote-mark">"</div><p>I've played every football manager game out there. This hits differently.</p><cite>— @GabrielTactics, Discord Community</cite></article>
+            <article class="quote reveal" style="transition-delay:.16s;"><div class="quote-mark">"</div><p>The fact that there's no pay-to-win makes it immediately more interesting than anything on the market.</p><cite>— @MobileGamingWeekly, Fictional Reviewer</cite></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section final" id="notify">
+        <div class="container">
+          <div class="section-head">
+            <span class="kicker">Launch Alert</span>
+            <h2>YOUR CLUB. YOUR RULES. YOUR SEASON.</h2>
+            <p>Legendary Club Owner is coming soon to international markets. Be first in line — no spam, just a launch notification.</p>
+          </div>
+          <div class="email-box">
+            <form class="email-form" id="notify-form" novalidate>
+              <div>
+                <label class="sr-only" for="email">Email address</label>
+                <input class="email-input" id="email" type="email" placeholder="your@email.com" autocomplete="email" required>
+                <div class="email-status" id="email-status" aria-live="polite"></div>
+              </div>
+              <button class="email-btn" type="submit">📱 Coming Soon — Notify Me</button>
+            </form>
+            <div class="small">Free to play. No credit card. No pay-to-win. Ever.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-top">© 2026 No Surrender Studio | Legendary Club Owner</div>
+        <div class="footer-mobile">Available soon on iOS &amp; Android</div>
+        <div class="socials">
+          <a class="social" href="#" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.9 2H22l-6.77 7.74L23 22h-6.1l-4.77-6.24L6.67 22H3.55l7.24-8.28L1 2h6.25l4.31 5.69L18.9 2Zm-1.07 18h1.69L6.33 3.9H4.51L17.83 20Z"/></svg></a>
+          <a class="social" href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2.2A2.8 2.8 0 0 0 4.2 7v10A2.8 2.8 0 0 0 7 19.8h10a2.8 2.8 0 0 0 2.8-2.8V7A2.8 2.8 0 0 0 17 4.2H7Zm5 2.3A5.5 5.5 0 1 1 6.5 12 5.5 5.5 0 0 1 12 6.5Zm0 2.2A3.3 3.3 0 1 0 15.3 12 3.3 3.3 0 0 0 12 8.7Zm5.7-2.83a1.28 1.28 0 1 1-1.28 1.28 1.28 1.28 0 0 1 1.28-1.28Z"/></svg></a>
+          <a class="social" href="#" aria-label="Discord"><svg viewBox="0 0 24 24"><path d="M19.54 5.31A16.57 16.57 0 0 0 15.46 4l-.2.4a14.85 14.85 0 0 1 3.74 1.34 13.18 13.18 0 0 0-4.07-1.27 14.31 14.31 0 0 0-5.87 0A13.31 13.31 0 0 0 5 5.74 14.84 14.84 0 0 1 8.72 4.4L8.52 4a16.61 16.61 0 0 0-4.08 1.31C1.85 9.24 1.2 13.08 1.52 16.87a16.72 16.72 0 0 0 5 2.58l1.07-1.48a10.88 10.88 0 0 1-1.7-.82l.42-.29a11.84 11.84 0 0 0 10.39 0l.42.29a10.82 10.82 0 0 1-1.7.82l1.06 1.48a16.68 16.68 0 0 0 5-2.58c.38-4.39-.64-8.2-2.94-11.56ZM9.14 14.55a1.64 1.64 0 1 1 1.5-1.63 1.57 1.57 0 0 1-1.5 1.63Zm5.72 0a1.64 1.64 0 1 1 1.5-1.63 1.57 1.57 0 0 1-1.5 1.63Z"/></svg></a>
+        </div>
+        <div>"The best manager wins. Always."</div>
+      </div>
+    </footer>
+
+    <script>
+      const quizQuestions = [
+        {
+          prompt: "Your star striker is injured before a big match. You...",
+          answers: [
+            ["A", "Play a false 9 and adjust the whole system 🧠", "A"],
+            ["B", "Buy a replacement immediately — budget be damned 💸", "B"],
+            ["C", "Promote a youngster from your academy 🌱", "C"],
+            ["D", "Shift to a defensive setup and grind the result 🔒", "D"]
+          ]
+        },
+        {
+          prompt: "You have budget for one signing. You pick...",
+          answers: [
+            ["A", "A versatile midfielder who fits multiple systems", "A"],
+            ["B", "The highest-rated card available, no questions asked", "B"],
+            ["C", "A young talent with massive development potential", "C"],
+            ["D", "A proven defensive anchor to shore up the backline", "D"]
+          ]
+        },
+        {
+          prompt: "Your league season starts in a week. You spend your prep time...",
+          answers: [
+            ["A", "Fine-tuning your formation and pressing triggers", "A"],
+            ["B", "Scouting the market for last-minute deals", "B"],
+            ["C", "Upgrading your training facilities", "C"],
+            ["D", "Studying your opponents' tendencies", "D"]
+          ]
+        },
+        {
+          prompt: "When you're losing at half time, you...",
+          answers: [
+            ["A", "Make tactical adjustments — shape, press, tempo", "A"],
+            ["B", "Throw money at the problem in the next transfer window", "B"],
+            ["C", "Trust the process and keep developing your project", "C"],
+            ["D", "Tighten up, absorb pressure and hit on the counter", "D"]
+          ]
+        }
+      ];
+
+      const results = {
+        A: {
+          title: "THE TACTICIAN 🧠",
+          type: "The Tactician",
+          body: "\"You see football as a chess match. You dissect systems, exploit weaknesses, and always have a Plan B. Legendary Club Owner was made for you.\"",
+          strength: "Formation mastery",
+          style: "Calculated"
+        },
+        B: {
+          title: "THE DEALMAKER 💼",
+          type: "The Dealmaker",
+          body: "\"You live for transfer deadline day. When you see the right player, you move fast. Your squad is always stacked — and you know it.\"",
+          strength: "Squad depth",
+          style: "Aggressive"
+        },
+        C: {
+          title: "THE VISIONARY 🌱",
+          type: "The Visionary",
+          body: "\"You play the long game. Youth, infrastructure, patience — you're building something that lasts. Rival managers won't know what hit them in three seasons.\"",
+          strength: "Club development",
+          style: "Methodical"
+        },
+        D: {
+          title: "THE IRON WALL 🛡️",
+          type: "The Iron Wall",
+          body: "\"You win by not losing. Your defensive organization is airtight, your game plans are meticulous, and your opponents hate playing against you.\"",
+          strength: "Defensive solidity",
+          style: "Disciplined"
+        }
+      };
+
+      const storeBadges = `
+        <div class="store-badges">
+          <a class="store-badge" href="#notify" aria-disabled="true">
+            <svg class="store-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.71 13.46c.03 2.97 2.61 3.96 2.64 3.97-.02.07-.41 1.42-1.35 2.81-.81 1.2-1.66 2.39-2.99 2.41-1.31.03-1.73-.78-3.23-.78-1.5 0-1.97.75-3.21.81-1.28.05-2.26-1.29-3.08-2.48-1.67-2.41-2.95-6.81-1.23-9.81.85-1.49 2.37-2.43 4.03-2.46 1.25-.03 2.43.84 3.22.84.78 0 2.25-1.03 3.79-.88.64.03 2.45.26 3.61 1.96-.09.05-2.16 1.26-2.2 3.61Zm-2.18-8.88c.68-.82 1.14-1.97 1.01-3.11-.98.04-2.16.66-2.87 1.48-.63.73-1.18 1.89-1.03 3 .91.07 2.2-.47 2.89-1.37Z"/></svg>
+            <span class="store-copy"><small>Download on the</small><strong>App Store</strong></span>
+          </a>
+          <a class="store-badge" href="#notify" aria-disabled="true">
+            <svg class="store-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.26 2.88c-.22.22-.34.54-.34.94v16.35c0 .36.11.64.3.84l9.26-9.27L3.26 2.88Zm10.43 9.95 2.88-2.88-9.98-5.8 7.1 8.68Zm3.91-2.28-3.16 3.16 3.16 3.16 2.8-1.58c.99-.56.99-1.6 0-2.16l-2.8-1.58Zm-11.01 9.3 9.98-5.8-2.88-2.88-7.1 8.68Z"/></svg>
+            <span class="store-copy"><small>Get it on</small><strong>Google Play</strong></span>
+          </a>
+        </div>
+      `;
+
+      const quizPanel = document.getElementById("quiz-panel");
+      const progressText = document.getElementById("quiz-progress-text");
+      const progressFill = document.getElementById("quiz-progress-fill");
+      const emailForm = document.getElementById("notify-form");
+      const email = document.getElementById("email");
+      const emailStatus = document.getElementById("email-status");
+      const picked = [];
+      let current = 0;
+
+      function swap(render) {
+        quizPanel.classList.add("leaving");
+        setTimeout(() => {
+          render();
+          quizPanel.classList.remove("leaving");
+        }, 180);
+      }
+
+      function winner() {
+        const tally = picked.reduce((acc, value) => {
+          acc[value] = (acc[value] || 0) + 1;
+          return acc;
+        }, { A: 0, B: 0, C: 0, D: 0 });
+        return ["A", "B", "C", "D"].reduce((best, key) => (!best || tally[key] > tally[best] ? key : best), "");
+      }
+
+      function renderQuestion() {
+        const q = quizQuestions[current];
+        progressText.textContent = `Question ${current + 1} of ${quizQuestions.length}`;
+        progressFill.style.width = `${((current + 1) / quizQuestions.length) * 100}%`;
+        quizPanel.innerHTML = `
+          <section>
+            <h3>${q.prompt}</h3>
+            <div class="answers">
+              ${q.answers.map(([letter, text, value]) => `
+                <button class="answer" type="button" data-value="${value}">
+                  <span class="letter">${letter}</span><span>${text}</span>
+                </button>
+              `).join("")}
+            </div>
+          </section>
+        `;
+        quizPanel.querySelectorAll(".answer").forEach((button) => {
+          button.addEventListener("click", () => {
+            picked.push(button.dataset.value);
+            if (current < quizQuestions.length - 1) {
+              current += 1;
+              swap(renderQuestion);
+            } else {
+              swap(renderResult);
+            }
+          });
+        });
+      }
+
+      function renderResult() {
+        const result = results[winner()];
+        progressText.textContent = "Result ready";
+        progressFill.style.width = "100%";
+        quizPanel.innerHTML = `
+          <section>
+            <h3>${result.title}</h3>
+            <p>${result.body}</p>
+            <div class="result-meta">
+              <span><strong>Strength:</strong> ${result.strength}</span>
+              <span><strong>Style:</strong> ${result.style}</span>
+            </div>
+            <div class="result-actions">
+              <a class="quiz-btn" href="#notify">📱 Coming Soon — Notify Me</a>
+              <div>
+                <p>Ready to play as ${result.type}? The app is coming soon.</p>
+                <div style="margin-top:12px;">${storeBadges}</div>
+              </div>
+              <a class="quiz-reset" href="#quiz">↩ TAKE QUIZ AGAIN</a>
+            </div>
+          </section>
+        `;
+        quizPanel.querySelector(".quiz-reset").addEventListener("click", (event) => {
+          event.preventDefault();
+          picked.length = 0;
+          current = 0;
+          swap(renderQuestion);
+          document.querySelector(".quiz-wrap").scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+      }
+
+      renderQuestion();
+
+      emailForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (!email.value.trim()) {
+          emailStatus.textContent = "Drop in your email first.";
+          return;
+        }
+        emailStatus.textContent = "✅ You're on the list. We'll see you on the pitch.";
+        emailForm.reset();
+      });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18, rootMargin: "0px 0px -40px 0px" });
+
+      document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>
